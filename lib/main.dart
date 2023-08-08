@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/modules/login/login_screen.dart';
-import 'package:shop_app/modules/search/cubit/cubit.dart';
 import 'package:shop_app/shared/bloc_observer.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/cubits/AppStates.dart';
@@ -50,6 +49,7 @@ class MyApp extends StatelessWidget {
   final bool? isDark;
   final Widget? startWidget;
   const MyApp({super.key, this.isDark,this.startWidget});
+ //hello
 
   @override
   Widget build(BuildContext context)
@@ -78,4 +78,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
 
