@@ -32,8 +32,12 @@ class CategoriesScreen extends StatelessWidget {
                         context),
                 separatorBuilder: (BuildContext context, int index) =>
                     myDivider(),
-                itemCount:
-                    ShopCubit.get(context).categoriesModel!.data!.data!.length),
+                itemCount: ShopCubit.get(context)
+                        .categoriesModel
+                        ?.data!
+                        .data!
+                        .length ??
+                    0),
           ),
         );
       },
