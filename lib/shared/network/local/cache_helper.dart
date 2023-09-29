@@ -1,48 +1,52 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CacheHelper{
+import '../../../models/categories_details_model.dart';
+
+class CacheHelper {
   static SharedPreferences? sharedPreferences;
 
-  static init()
-  async{
-     sharedPreferences=await SharedPreferences.getInstance();
+  static init() async {
+    sharedPreferences = await SharedPreferences.getInstance();
   }
 
   static Future<bool?> putBoolData(
-      {required String key, required bool value}) async{
-    return await sharedPreferences?.setBool(key, value);}
+      {required String key, required bool value}) async {
+    return await sharedPreferences?.setBool(key, value);
+  }
 
-
-  static bool? getBoolData({required key}){
+  static bool? getBoolData({required key}) {
     return sharedPreferences?.getBool(key);
   }
 
-  static dynamic getData({required key}){
+  static dynamic getData({required key}) {
     return sharedPreferences?.get(key);
   }
-
 
   static Future saveData({
     required String key,
     required dynamic value,
-})async{
-    if(value is String){
+  }) async {
+    if (value is String) {
       return await sharedPreferences?.setString(key, value);
     }
-    if(value is int){
+    if (value is int) {
       return await sharedPreferences?.setInt(key, value);
     }
-    if(value is bool){
+    if (value is bool) {
       return await sharedPreferences?.setBool(key, value);
     }
     return await sharedPreferences?.setDouble(key, value);
-
   }
 
-
-  static Future<bool?> removeData({required String key})async{
+  static Future<bool?> removeData({required String key}) async {
     return await sharedPreferences?.remove(key);
   }
 
-
+  static void saveCategoryModelToSharedPreferences(
+      CategoryDetailsModel categoryDetailsModel) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('bookModel', jsonEncode(categoryDetailsModel.toJson()));
+  }
 }

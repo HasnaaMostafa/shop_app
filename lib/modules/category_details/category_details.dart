@@ -14,8 +14,8 @@ class CategoriesDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ShopCubit,ShopState>(
-      listener: (BuildContext context,Object state) {
+    return BlocConsumer<ShopCubit, ShopState>(
+      listener: (BuildContext context, Object state) {
         if (state is ShopSuccessFavouritesDataState) {
           inFavourite = !inFavourite;
         }
@@ -23,158 +23,167 @@ class CategoriesDetails extends StatelessWidget {
           inCart = !inCart;
         }
       },
-      builder: (BuildContext context,Object state){
-        var model=ShopCubit.get(context).categoryDetailsModel!.data;
+      builder: (BuildContext context, Object state) {
+        var model = ShopCubit.get(context).categoryDetailsModel?.data;
         return Scaffold(
           appBar: AppBar(),
           body: ConditionalBuilder(
-            condition:state is ! ShopLoadingGetCategoryDetailsStates ,
-            builder: (BuildContext context)=> Container(
+            condition: state is! ShopLoadingGetCategoryDetailsStates,
+            builder: (BuildContext context) => Container(
               color: Colors.grey[300],
               clipBehavior: Clip.none,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: GridView.count(
-                      crossAxisCount: 2,
-                  childAspectRatio: 1/1.9,
-                  mainAxisSpacing: 1,
-                  crossAxisSpacing: 1,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children:
-                    List.generate(model!.catData.length,
-                            (index) =>CategoryProduct(model.catData[index], context) )
-                  ,),
+                    crossAxisCount: 2,
+                    childAspectRatio: 1 / 1.9,
+                    mainAxisSpacing: 1,
+                    crossAxisSpacing: 1,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: List.generate(
+                        model?.catData.length ?? 0,
+                        (index) =>
+                            CategoryProduct(model?.catData[index], context)),
+                  ),
                 ),
               ),
-            ) ,
-            fallback: (BuildContext context)=>Center(child: CircularProgressIndicator()),
+            ),
+            fallback: (BuildContext context) =>
+                Center(child: CircularProgressIndicator()),
           ),
         );
       },
-
     );
   }
 
-  Widget CategoryProduct(CatData? model,context)=>Padding(
-    padding: const EdgeInsets.all(7.0),
-    child: Container(
-      height: 300,
-      clipBehavior: Clip.hardEdge,
-      padding: EdgeInsets.fromLTRB(10, 15, 10, 25),
-      decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(15),
-      color: Colors.white,),
-      child: Column(
-        children: [
-          Stack(
-            alignment: AlignmentDirectional.topStart,
-            children: [
-              InkWell(
-                onTap: (){
-                  ShopCubit.get(context).getProductDetails(model.id!);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (BuildContext context)=>ProductIn()));
-                },
-                child: CachedNetworkImage(imageUrl: model!.image!,
-                errorWidget: (BuildContext context,String url , dynamic error)=>
-                  Icon(Icons.error_outline),
-                  width: double.infinity,
-                  height: 130,),
-              ),
-              if(model.discount!=0)
-                Positioned(
-                bottom: 110,
-                right: 88,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.red,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child:const Text(
-                    "Discount",style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.white,
-                  ),
-                  ),
-                ),
-              ),
-            ],
+  Widget CategoryProduct(CatData? model, context) => Padding(
+        padding: const EdgeInsets.all(7.0),
+        child: Container(
+          height: 300,
+          clipBehavior: Clip.hardEdge,
+          padding: EdgeInsets.fromLTRB(10, 15, 10, 25),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
           ),
-            Spacer(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  model.name!,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14,
-                    height: 1.3,
-                  ),
-
-                ),
-                Row(
-                  children: [
-                    Text("${model.price.round()}",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.purple
-                    ),),
-                    SizedBox(
-                      width: 3,
+          child: Column(
+            children: [
+              Stack(
+                alignment: AlignmentDirectional.topStart,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      ShopCubit.get(context).getProductDetails(model.id!);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => ProductIn()));
+                    },
+                    child: CachedNetworkImage(
+                      imageUrl: model!.image!,
+                      errorWidget:
+                          (BuildContext context, String url, dynamic error) =>
+                              Icon(Icons.error_outline),
+                      width: double.infinity,
+                      height: 130,
                     ),
-                    if(model.discount!=0)
-                      Text("${model.oldPrice.round()}",
-                        style: TextStyle(
+                  ),
+                  if (model.discount != 0)
+                    Positioned(
+                      bottom: 110,
+                      right: 88,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.red,
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: const Text(
+                          "Discount",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    model.name!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 14,
+                      height: 1.3,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "${model.price.round()}",
+                        style: TextStyle(fontSize: 12, color: Colors.purple),
+                      ),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      if (model.discount != 0)
+                        Text(
+                          "${model.oldPrice.round()}",
+                          style: TextStyle(
                             fontSize: 6,
                             color: Colors.grey,
-                          decoration: TextDecoration.lineThrough,
-                        ),),
-                       Spacer(),],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        ShopCubit.get(context).favourites[model.id] == true
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        size: 20,
-                        color: ShopCubit.get(context).favourites[model.id]==true? Colors.red : Colors.black,
-                      ),
-                      onPressed:(){
-                        ShopCubit.get(context).changeFavourite(model.id!);
-                        print(model.id!.toString());
-                      },),
-                    Spacer(),
-                    IconButton(
-                        onPressed: (){
-                          ShopCubit.get(context).ChangeToCart(model.id!);
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      Spacer(),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          ShopCubit.get(context).favourites[model.id] == true
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          size: 20,
+                          color: ShopCubit.get(context).favourites[model.id] ==
+                                  true
+                              ? Colors.red
+                              : Colors.black,
+                        ),
+                        onPressed: () {
+                          ShopCubit.get(context).changeFavourite(model.id!);
                           print(model.id!.toString());
                         },
-                        icon: Icon(
-                          ShopCubit.get(context).cart[model.id] == true
-                              ? Icons.shopping_cart_rounded
-                              : Icons.shopping_cart_outlined,
-                          size: 20,
-
-
-                        )),
-
-                  ],
-                )
-              ],
-            )
-
-        ],
-      ),
-
-    ),
-  );
+                      ),
+                      Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            ShopCubit.get(context).ChangeToCart(model.id!);
+                            print(model.id!.toString());
+                          },
+                          icon: Icon(
+                            ShopCubit.get(context).cart[model.id] == true
+                                ? Icons.shopping_cart_rounded
+                                : Icons.shopping_cart_outlined,
+                            size: 20,
+                          )),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      );
 }

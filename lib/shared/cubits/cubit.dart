@@ -122,6 +122,8 @@ class NewsCubit extends Cubit<NewsStates>{
 
 
 }
+
+
 // class AppCubit extends Cubit<AppStates>{
 //
 //   AppCubit() : super(AppInitialStates());
